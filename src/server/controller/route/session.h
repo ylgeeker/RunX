@@ -21,49 +21,8 @@
  * SOFTWARE.
  */
 
-#ifndef _YLG_INTERNAL_ERROR_H_
-#define _YLG_INTERNAL_ERROR_H_
-
-#include "core/error/error.h"
-
-#include <climits>
-#include <cstdint>
-
-namespace ylg {
-namespace internal {
-
-enum class ErrorCode : int32_t
-{
-    Unknown  = (int32_t)ylg::error::ErrorCode::Unknown,
-    Error    = (int32_t)ylg::error::ErrorCode::Error,
-    Success  = (int32_t)ylg::error::ErrorCode::Success,
-    MaxValue = INT_MAX,
-};
-
-class ErrorCodeCategory final : public std::error_category
-{
-public:
-    static ErrorCodeCategory& Instance();
-
-public:
-    const char* name() const noexcept override;
-    std::string message(int code) const override;
-};
-
-std::error_code make_error_code(ErrorCode e);
-bool            IsSuccess(const std::error_code& ec);
-std::string     ToString(int ec);
-
-} // namespace internal
-} // namespace ylg
-
-namespace std {
-template <>
-struct is_error_code_enum<ylg::internal::ErrorCode> : std::true_type
-{
-};
-
-} // namespace std
+#ifndef _YLG_SERVER_CONTROLLER_ROUTE_SESSION_H_
+#define _YLG_SERVER_CONTROLLER_ROUTE_SESSION_H_
 
 #endif
 

@@ -51,7 +51,7 @@ enum class ErrorCode : int32_t
     HTTPRespondFailed,
 
     // application error code
-    ParseConfigFailure = 1,
+    ParseConfigFailure,
 
     // assist error code
     Overflow,
@@ -59,7 +59,8 @@ enum class ErrorCode : int32_t
     InvalidParameter,
     InvalidUser,
 
-    MaxValue = INT_MAX / 2, // (INT_MAX/2,INT_MAX) Reserved user-defined
+    // max code
+    MaxValue = USHRT_MAX,
 };
 
 class ErrorCodeCategory final : public std::error_category
