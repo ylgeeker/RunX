@@ -138,11 +138,11 @@ public:
     }
 
     /**
-     * @brief Delete delete the all keys from the map which has the value
+     * @brief DeleteByValue delete the all keys from the map which has the value
      *
      * @param value the map value
      */
-    void Delete(VAL value)
+    void DeleteByValue(VAL value)
     {
         std::unique_lock<std::shared_mutex> lock(_mutex);
 
