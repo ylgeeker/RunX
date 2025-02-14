@@ -26,6 +26,7 @@
 #include "core/error/error.h"
 #include "core/log/log.h"
 #include "core/net/message.h"
+#include "core/net/tcp_connection.h"
 #include "core/net/tcp_server.h"
 
 Transfer::Transfer()
@@ -46,7 +47,7 @@ void Transfer::OnDisconnection(ylg::net::TCPConnection* connection)
     LOG_DEBUG("connection disconnection.{}", connection->ID());
 }
 
-void Transfer::HandleData(const ylg::net::Message& msg)
+void Transfer::HandleData(ylg::net::TCPConnection* connection, const ylg::net::Message& msg)
 {
     LOG_DEBUG("new message{} size:{}", msg.GetPayload(), msg.GetPayloadSize());
 

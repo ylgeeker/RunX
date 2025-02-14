@@ -26,12 +26,12 @@
 #include "core/error/error.h"
 #include "core/log/log.h"
 #include "core/net/message.h"
+#include "core/net/tcp_connection.h"
 #include "core/net/tcp_server.h"
 
-Controller::Controller() {}
-
-Controller::~Controller()
+Controller::Controller()
 {
+    _route = std::make_shared<Route>();
 }
 
 void Controller::OnConnection(ylg::net::TCPConnection* connection)
@@ -44,7 +44,7 @@ void Controller::OnDisconnection(ylg::net::TCPConnection* connection)
     LOG_DEBUG("connection disconnection.{}", connection->ID());
 }
 
-void Controller::HandleData(const ylg::net::Message& msg)
+void Controller::HandleData(ylg::net::TCPConnection* connection, const ylg::net::Message& msg)
 {
     LOG_DEBUG("new message{} size:{}", msg.GetPayload(), msg.GetPayloadSize());
 

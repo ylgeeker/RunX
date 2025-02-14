@@ -63,7 +63,7 @@ void TCPClient::ReadCallback(bufferevent* bev, void* ctx)
     }
 
     auto handler = static_cast<TCPClient*>(connection->GetHandler());
-    handler->_functor->HandleData(msg);
+    handler->_functor->HandleData(connection, msg);
 }
 
 void TCPClient::EventCallback(bufferevent* bev, short events, void* ctx)

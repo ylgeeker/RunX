@@ -25,6 +25,7 @@
 #define _YLG_AGENT_CLIENT_CLIENT_H_
 
 #include "core/net/tcp_client.h"
+#include "core/net/tcp_connection.h"
 
 #include <cstdint>
 
@@ -38,7 +39,7 @@ public:
 public:
     virtual void OnConnection(ylg::net::TCPConnection* connection);
     virtual void OnDisconnection(ylg::net::TCPConnection* connection);
-    virtual void HandleData(const ylg::net::Message& msg);
+    virtual void HandleData(ylg::net::TCPConnection* connection, const ylg::net::Message& msg);
 
 public:
     void Connect(const std::string& remoteIP, uint16_t remotePort);

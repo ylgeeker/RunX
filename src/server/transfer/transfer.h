@@ -24,6 +24,7 @@
 #ifndef _YLG_SERVER_TRANSFER_TRANSFER_H_
 #define _YLG_SERVER_TRANSFER_TRANSFER_H_
 
+#include "core/net/tcp_connection.h"
 #include "core/net/tcp_handler.h"
 #include "core/net/tcp_server.h"
 
@@ -40,7 +41,7 @@ public:
 public:
     virtual void OnConnection(ylg::net::TCPConnection* connection);
     virtual void OnDisconnection(ylg::net::TCPConnection* connection);
-    virtual void HandleData(const ylg::net::Message& msg);
+    virtual void HandleData(ylg::net::TCPConnection* connection, const ylg::net::Message& msg);
 
 public:
     void Run(const std::string& listenIP, uint16_t listenPort);

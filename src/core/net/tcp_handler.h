@@ -42,9 +42,9 @@ public:
     virtual ~TCPHandlerCallback() = default;
 
 public:
-    virtual void OnConnection(TCPConnection* connection)    = 0;
-    virtual void OnDisconnection(TCPConnection* connection) = 0;
-    virtual void HandleData(const Message& msg)             = 0;
+    virtual void OnConnection(TCPConnection* connection)                   = 0;
+    virtual void OnDisconnection(TCPConnection* connection)                = 0;
+    virtual void HandleData(TCPConnection* connection, const Message& msg) = 0;
 };
 
 using TCPHandlerCallbackFunctor = std::shared_ptr<TCPHandlerCallback>;

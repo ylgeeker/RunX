@@ -26,9 +26,9 @@
 
 #include "server/controller/route/agent_session.h"
 
-#include "internal/error.h"
-
 #include "core/container/safe_map.h"
+
+#include <system_error>
 
 class Route final
 {
@@ -49,6 +49,8 @@ private:
     // Key:AgentID, Value: Agent Session
     ylg::container::SafeMap<std::string, AgentSessionPtr> _agents;
 };
+
+using RoutePtr = std::shared_ptr<Route>;
 
 #endif
 

@@ -63,7 +63,7 @@ void Client::OnDisconnection(ylg::net::TCPConnection* connection)
     LOG_DEBUG("disconnected with the remote server. connection:{}", connection->ID());
 }
 
-void Client::HandleData(const ylg::net::Message& msg)
+void Client::HandleData(ylg::net::TCPConnection* connection, const ylg::net::Message& msg)
 {
     LOG_DEBUG("new message{} size:{}", msg.GetPayload(), msg.GetPayloadSize());
 }

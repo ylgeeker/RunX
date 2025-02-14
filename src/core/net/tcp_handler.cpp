@@ -41,7 +41,7 @@ void TCPHandler::ReadCallback(bufferevent* bev, void* ctx)
 
     LOG_DEBUG("readed a message. connection:{}", connection->ID());
     auto handler = static_cast<TCPHandler*>(connection->GetHandler());
-    handler->_functor->HandleData(msg);
+    handler->_functor->HandleData(connection, msg);
 }
 
 void TCPHandler::EventCallback(bufferevent* bev, short events, void* ctx)

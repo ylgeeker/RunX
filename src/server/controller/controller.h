@@ -24,6 +24,9 @@
 #ifndef _YLG_SERVER_CONTROLLER_H_
 #define _YLG_SERVER_CONTROLLER_H_
 
+#include "server/controller/route/route.h"
+
+#include "core/net/tcp_connection.h"
 #include "core/net/tcp_handler.h"
 #include "core/net/tcp_server.h"
 
@@ -35,12 +38,12 @@ class Controller final : public ylg::net::TCPHandlerCallback, public std::enable
 {
 public:
     Controller();
-    ~Controller();
+    ~Controller() = default;
 
 public:
     virtual void OnConnection(ylg::net::TCPConnection* connection);
     virtual void OnDisconnection(ylg::net::TCPConnection* connection);
-    virtual void HandleData(const ylg::net::Message& msg);
+    virtual void HandleData(ylg::net::TCPConnection* connection, const ylg::net::Message& msg);
 
 public:
     void Run(const std::string& listenIP, uint16_t listenPort);
@@ -51,6 +54,7 @@ private:
     std::string            _listenIP;
     uint16_t               _listenPort = 0;
     ylg::net::TCPServerPtr _server     = nullptr;
+    RoutePtr               _route      = nullptr;
 };
 
 #endif
