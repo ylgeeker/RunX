@@ -24,6 +24,7 @@
 #ifndef _YLG_SERVER_CONTROLLER_ROUTE_ROUTE_H_
 #define _YLG_SERVER_CONTROLLER_ROUTE_ROUTE_H_
 
+#include "core/net/tcp_connection.h"
 #include "server/controller/route/agent_session.h"
 
 #include "core/container/safe_map.h"
@@ -37,8 +38,11 @@ public:
     ~Route() = default;
 
 public:
-    void            Push(AgentSessionPtr session);
-    void            Remove(const std::string& agentConnID);
+    std::error_code CreateLocalSession(ylg::net::TCPConnection* conn);
+    std::error_code CreateRemoteSession(AgentSessionPtr session);
+    AgentSessionPtr FindAgentSession(const std::string& agentID);
+    std::error_code RemoveLocalSession(ylg::net::TCPConnection* conn);
+    std::error_code RemoveAgentSession(const std::string& agentID);
     std::error_code Run();
     void            Close();
 

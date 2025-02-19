@@ -22,14 +22,35 @@
  */
 
 #include "server/controller/route/route.h"
+#include "core/net/tcp_connection.h"
 #include "server/controller/route/agent_session.h"
 
-void Route::Push(AgentSessionPtr session)
+#include "internal/error.h"
+#include <system_error>
+
+std::error_code Route::CreateLocalSession(ylg::net::TCPConnection* conn)
 {
+    return ylg::internal::ErrorCode::Success;
 }
 
-void Route::Remove(const std::string& agentConnID)
+std::error_code Route::CreateRemoteSession(AgentSessionPtr session)
 {
+    return ylg::internal::ErrorCode::Success;
+}
+
+AgentSessionPtr Route::FindAgentSession(const std::string& agentID)
+{
+    return nullptr;
+}
+
+std::error_code Route::RemoveLocalSession(ylg::net::TCPConnection* conn)
+{
+    return ylg::internal::ErrorCode::Success;
+}
+
+std::error_code Route::RemoveAgentSession(const std::string& agentID)
+{
+    return ylg::internal::ErrorCode::Error;
 }
 
 std::error_code Route::Run()
