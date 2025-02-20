@@ -24,6 +24,9 @@
 #ifndef _YLG_SERVER_CONTROLLER_H_
 #define _YLG_SERVER_CONTROLLER_H_
 
+#include "internal/controller_protocol.h"
+#include "server/controller/processor/processor.h"
+#include "server/controller/processor/register_agent_processor.h"
 #include "server/controller/route/route.h"
 
 #include "core/net/tcp_connection.h"
@@ -46,6 +49,7 @@ public:
     virtual void HandleData(ylg::net::TCPConnection* connection, const ylg::net::Message& msg);
 
 public:
+    void RegisterProcessor(ylg::internal::MessageType type, MsgProcessorPtr processor);
     void Run(const std::string& listenIP, uint16_t listenPort);
     void Close();
 

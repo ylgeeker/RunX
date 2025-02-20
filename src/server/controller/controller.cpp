@@ -23,11 +23,15 @@
 
 #include "server/controller/controller.h"
 
+#include "internal/controller_protocol.h"
+#include "internal/error.h"
+
 #include "core/error/error.h"
 #include "core/log/log.h"
 #include "core/net/message.h"
 #include "core/net/tcp_connection.h"
 #include "core/net/tcp_server.h"
+#include "server/controller/processor/processor.h"
 
 Controller::Controller()
 {
@@ -37,11 +41,25 @@ Controller::Controller()
 void Controller::OnConnection(ylg::net::TCPConnection* connection)
 {
     LOG_DEBUG("new connection.{}", connection->ID());
+    auto errcode = _route->CreateLocalSession(connection);
+    if (!ylg::internal::IsSuccess(errcode))
+    {
+        LOG_WARN("failed to create local session for the connection:{}", connection->ID());
+    }
+
+    LOG_DEBUG("created local session for the connection:{}", connection->ID());
 }
 
 void Controller::OnDisconnection(ylg::net::TCPConnection* connection)
 {
     LOG_DEBUG("connection disconnection.{}", connection->ID());
+    auto errcode = _route->RemoveLocalSession(connection);
+    if (!ylg::internal::IsSuccess(errcode))
+    {
+        LOG_WARN("failed to remove local session for the connection:{}", connection->ID());
+    }
+
+    LOG_DEBUG("removed the local session for the connection:{}", connection->ID());
 }
 
 void Controller::HandleData(ylg::net::TCPConnection* connection, const ylg::net::Message& msg)
@@ -63,6 +81,10 @@ void Controller::HandleData(ylg::net::TCPConnection* connection, const ylg::net:
         LOG_ERROR("can not send send to remote server. errcode:{}", errcode.value());
     }
     */
+}
+
+void Controller::RegisterProcessor(ylg::internal::MessageType type, MsgProcessorPtr processor)
+{
 }
 
 void Controller::Run(const std::string& listenIP, uint16_t listenPort)
