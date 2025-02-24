@@ -61,7 +61,7 @@ public:
     void          Reset(const Header& header, const char* payload, uint32_t payloadSize);
     void          ResetHeader(const Header& header);
     void          ResetPayload(const char* data, uint32_t dataSize);
-    const Header& GetHeader();
+    const Header& GetHeader() const;
     const char*   GetData() const;
     uint32_t      GetDataSize() const;
     const char*   GetPayload() const;

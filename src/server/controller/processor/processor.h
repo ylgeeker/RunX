@@ -24,15 +24,10 @@
 #ifndef _YLG_SERVER_CONTROLLER_PROCESSOR_PROCESSOR_H_
 #define _YLG_SERVER_CONTROLLER_PROCESSOR_PROCESSOR_H_
 
-#include "internal/controller_protocol.h"
-
 #include "core/net/message.h"
 
-#include <functional>
 #include <memory>
 #include <system_error>
-
-using Task = std::function<std::error_code(const ylg::net::Message& req, ylg::net::Message& rsp)>;
 
 class MsgProcessor
 {
@@ -41,7 +36,7 @@ public:
     virtual ~MsgProcessor() = default;
 
 public:
-    virtual std::error_code Do(Task task) = 0;
+    virtual std::error_code Do(const ylg::net::Message& req, ylg::net::Message& rsp) = 0;
 };
 
 using MsgProcessorPtr = std::shared_ptr<MsgProcessor>;

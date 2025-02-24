@@ -33,7 +33,7 @@ namespace internal {
 
 #define PROTOCOL_VERSION_01 0x01
 
-enum class MessageType
+enum class MessageType : uint32_t
 {
     AuthRequest              = 0x0001,
     AuthResponse             = 0x0002,
@@ -51,13 +51,13 @@ enum class MessageType
     OperatePluginResponse    = 0x000F,
 };
 
-enum class AgentState
+enum class AgentState : uint32_t
 {
     Offline = 0x01,
     Online  = 0x02,
 };
 
-enum class AgentPluginState
+enum class AgentPluginState : uint32_t
 {
     Offline = 0x01,
     Online  = 0x02,

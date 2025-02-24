@@ -23,6 +23,7 @@
 
 #include "server/controller/controller.h"
 
+#include "core/assist/execution_multi_queue.h"
 #include "internal/controller_protocol.h"
 #include "internal/error.h"
 
@@ -31,11 +32,11 @@
 #include "core/net/message.h"
 #include "core/net/tcp_connection.h"
 #include "core/net/tcp_server.h"
-#include "server/controller/processor/processor.h"
 
 Controller::Controller()
 {
     _route = std::make_shared<Route>();
+    _tasks = std::make_shared<ylg::assist::ExecutionMultiQueue>("controller_task_queue", CONTROLLER_TASK_QUEUE_SIZE_DFT, CONTROLLER_TASK_QUEUE_COUNT_DFT);
 }
 
 void Controller::OnConnection(ylg::net::TCPConnection* connection)
@@ -81,10 +82,26 @@ void Controller::HandleData(ylg::net::TCPConnection* connection, const ylg::net:
         LOG_ERROR("can not send send to remote server. errcode:{}", errcode.value());
     }
     */
-}
 
-void Controller::RegisterProcessor(ylg::internal::MessageType type, MsgProcessorPtr processor)
-{
+    auto task = [&]() {
+        auto header = msg.GetHeader();
+        auto type   = (ylg::internal::MessageType)header._msgType;
+
+        auto iter = _processors.find(type);
+        if (iter != _processors.end())
+        {
+            return;
+        }
+
+        auto processor = iter->second;
+        // processor->Do();
+    };
+
+    auto errcode = _tasks->Enqueue(task);
+    if (!ylg::error::IsSuccess(errcode))
+    {
+        LOG_WARN("can not enqueue controllor task queue. errmsg:{}", errcode.message());
+    }
 }
 
 void Controller::Run(const std::string& listenIP, uint16_t listenPort)
@@ -114,5 +131,9 @@ void Controller::Close()
     }
 
     _asyncRun.wait();
+}
+
+void Controller::RegisterProcessor()
+{
 }
 

@@ -81,7 +81,7 @@ void Message::ResetPayload(const char* payload, uint32_t payloadSize)
     memcpy(_data + MESSAGE_HEADER_SIZE, payload, payloadSize);
 }
 
-const Header& Message::GetHeader()
+const Header& Message::GetHeader() const
 {
     return _header;
 }

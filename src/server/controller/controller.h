@@ -26,16 +26,22 @@
 
 #include "internal/controller_protocol.h"
 #include "server/controller/processor/processor.h"
-#include "server/controller/processor/register_agent_processor.h"
 #include "server/controller/route/route.h"
 
+#include "core/assist/execution_multi_queue.h"
 #include "core/net/tcp_connection.h"
 #include "core/net/tcp_handler.h"
 #include "core/net/tcp_server.h"
 
 #include <cstdint>
 #include <future>
+#include <map>
 #include <memory>
+
+// clang-format off
+#define CONTROLLER_TASK_QUEUE_SIZE_DFT  40960
+#define CONTROLLER_TASK_QUEUE_COUNT_DFT 10
+// clang-format on
 
 class Controller final : public ylg::net::TCPHandlerCallback, public std::enable_shared_from_this<Controller>
 {
@@ -49,16 +55,20 @@ public:
     virtual void HandleData(ylg::net::TCPConnection* connection, const ylg::net::Message& msg);
 
 public:
-    void RegisterProcessor(ylg::internal::MessageType type, MsgProcessorPtr processor);
     void Run(const std::string& listenIP, uint16_t listenPort);
     void Close();
 
 private:
-    std::future<void>      _asyncRun;
-    std::string            _listenIP;
-    uint16_t               _listenPort = 0;
-    ylg::net::TCPServerPtr _server     = nullptr;
-    RoutePtr               _route      = nullptr;
+    void RegisterProcessor();
+
+private:
+    std::future<void>                                     _asyncRun;
+    std::string                                           _listenIP;
+    uint16_t                                              _listenPort = 0;
+    ylg::assist::ExecutionMultiQueuePtr                   _tasks      = nullptr;
+    ylg::net::TCPServerPtr                                _server     = nullptr;
+    RoutePtr                                              _route      = nullptr;
+    std::map<ylg::internal::MessageType, MsgProcessorPtr> _processors;
 };
 
 #endif
